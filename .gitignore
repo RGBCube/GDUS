@@ -3,6 +3,7 @@
 !src/
 
 !.gitignore
+!.rustfmt.toml
 !Cargo.lock
 !Cargo.toml
 
