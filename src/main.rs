@@ -1,5 +1,11 @@
-use axum::{routing, Router};
-use maud::{html, Markup};
+use axum::{
+    routing,
+    Router,
+};
+use maud::{
+    html,
+    Markup,
+};
 
 async fn index() -> Markup {
     html! {
