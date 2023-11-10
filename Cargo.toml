@@ -1,6 +1,12 @@
 [package]
 name = "proje"
+description = "TÜBİTAK Projesi"
+authors = [ "RGBCube" ]
+repository = "https://github.com/RGBCube/NamelessProje"
+license = "GPL"
 version = "0.0.1"
 edition = "2021"
 
 [dependencies]
+axum = "0.6.20"
+maud = { version = "0.25.0", features = [ "axum" ] }
