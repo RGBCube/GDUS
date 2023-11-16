@@ -1,24 +1,19 @@
-use axum::{
-    routing,
-    Router,
-};
-use maud::{
-    html,
-    Markup,
-};
+mod index;
+mod submit;
 
-async fn index() -> Markup {
-    html! {
-        h1 { "Hello, World!" }
-    }
-}
+use std::io;
 
-#[tokio::main]
-async fn main() {
-    let app = Router::new().route("/", routing::get(index));
+use actix_web as web;
 
-    axum::Server::bind(&"0.0.0.0:80".parse().unwrap())
-        .serve(app.into_make_service())
-        .await
-        .unwrap();
+#[web::main]
+async fn main() -> io::Result<()> {
+    web::HttpServer::new(|| {
+        web::App::new()
+            .service(index::index)
+            .service(submit::submit)
+            .service(submit::submit_form)
+    })
+    .bind(("127.0.0.1", 80))?
+    .run()
+    .await
 }

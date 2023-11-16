@@ -8,5 +8,10 @@ version = "0.0.1"
 edition = "2021"
 
 [dependencies]
-axum = "0.6.20"
-maud = { version = "0.25.0", features = [ "axum" ] }
+actix-web = "4.4.0"
+maud      = { version = "0.25.0", features = [ "actix-web" ] }
+serde     = { version = "1.0.192", features = [ "derive" ] }
+tokio     = { version = "1.34.0", features = [ "full" ] }
+
+[profile.dev]
+incremental = true
