@@ -7,4 +7,5 @@
 !Cargo.lock
 !Cargo.toml
 
+!*.md
 !*.rs
