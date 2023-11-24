@@ -6,6 +6,7 @@ use actix_web::web::{
 use maud::{
     html,
     Markup,
+    PreEscaped,
     DOCTYPE,
 };
 use sqlx::SqlitePool;
@@ -41,9 +42,9 @@ async fn submit_form(
         (DOCTYPE)
         h1 { "Kaydedildi." }
         p { "Ana sayfaya geri yönlendiriliyorsun..." }
-        script type="text/javascript" {r#"
-            setTimeout(() => window.location.href = "/", 5000);
-        "#}
+        script type="text/javascript" {(PreEscaped(r#"
+            setTimeout(function() { window.location.href = "/"; }, 5000);
+        "#))}
     })
 }
 

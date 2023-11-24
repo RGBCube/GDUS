@@ -1,5 +1,6 @@
 mod index;
 mod submit;
+mod view;
 
 use std::io;
 
@@ -33,6 +34,7 @@ async fn main() -> io::Result<()> {
             .service(index::index)
             .service(submit::submit)
             .service(submit::submit_form)
+            .service(view::view);
     })
     .bind(("127.0.0.1", 80))?
     .run()
