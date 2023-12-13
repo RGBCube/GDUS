@@ -3,6 +3,7 @@ use actix_web::web::{
     Data,
     Query,
 };
+use chrono::NaiveDateTime;
 use maud::{
     html,
     Markup,
@@ -10,7 +11,6 @@ use maud::{
     DOCTYPE,
 };
 use sqlx::SqlitePool;
-
 #[derive(Debug, serde::Deserialize)]
 pub struct Reminder {
     date: String,
@@ -32,7 +32,11 @@ async fn submit_form(
             (?, ?)
     ",
     )
-    .bind(reminder.date)
+    .bind(
+        NaiveDateTime::parse_from_str(&reminder.date, "%Y-%m-%dT%H:%M")
+            .unwrap()
+            .timestamp() as i64,
+    )
     .bind(reminder.message)
     .execute(&**data)
     .await
@@ -53,19 +57,13 @@ async fn submit() -> web::Result<Markup> {
     Ok(html! {
         (DOCTYPE)
         form action="/submit-form" {
-            ul {
-                li class="li-button" {
-                    button type="submit" { "Kaydet" }
-                }
-                li {
-                    label for="date" { "Tarih:" }
-                    input type="datetime-local" id="date" name="date";
-                }
-                li {
-                    label for="message" { "Mesaj:" }
-                    input id="message" name="message";
-                }
-            }
+            button type="submit" { "Kaydet" }
+            br;
+            label for="date" { "Tarih:" }
+            input type="datetime-local" id="date" name="date";
+            br;
+            label for="message" { "Mesaj:" }
+            input id="message" name="message";
         }
     })
 }

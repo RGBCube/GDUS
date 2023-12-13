@@ -3,6 +3,7 @@ use actix_web::web::{
     Data,
     Query,
 };
+use chrono::Local;
 use maud::{
     html,
     Markup,
@@ -10,16 +11,33 @@ use maud::{
 };
 use sqlx::SqlitePool;
 
-#[web::get("/")]
-async fn index(data: Data<SqlitePool>) -> web::Result<Markup> {
-    sqlx::query_as::<(String, String)>(
+#[web::get("/view")]
+async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
+    let reminders = sqlx::query_as::<_, (i64, String)>(
         r"
-       TODO
+        SELECT
+          *
+        FROM
+          reminders
+        WHERE
+          date > ?
     ",
-    );
+    )
+    .bind(Local::now().timestamp() as i64)
+    .fetch_all(&**data)
+    .await
+    .expect("Failed to fetch reminder.");
+    println!("{reminders:?}");
 
     Ok(html! {
         (DOCTYPE)
-        h1 { "Hello, World!" }
+        ul {
+            @for reminder in reminders {
+                li {
+                    h3 { (reminder.0) }
+                    p { (reminder.1) }
+                }
+            }
+        }
     })
 }

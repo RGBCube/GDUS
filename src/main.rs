@@ -19,8 +19,8 @@ async fn main() -> io::Result<()> {
     sqlx::query(
         r"
         CREATE TABLE IF NOT EXISTS reminders (
-            date    TEXT,
-            message TEXT
+            date    INTEGET NOT NULL,
+            message TEXT NOT NULL
         )
     ",
     )
@@ -34,7 +34,7 @@ async fn main() -> io::Result<()> {
             .service(index::index)
             .service(submit::submit)
             .service(submit::submit_form)
-            .service(view::view);
+            .service(view::view)
     })
     .bind(("127.0.0.1", 80))?
     .run()
