@@ -12,21 +12,25 @@ use sqlx::{
 
 #[web::main]
 async fn main() -> io::Result<()> {
-    let db = SqlitePool::connect_with(SqliteConnectOptions::new().filename("data.db"))
-        .await
-        .unwrap();
+    let db = SqlitePool::connect_with(
+        SqliteConnectOptions::new()
+            .filename("data.db")
+            .create_if_missing(true),
+    )
+    .await
+    .expect("Failed to connect to SQLite database.");
 
     sqlx::query(
         r"
         CREATE TABLE IF NOT EXISTS reminders (
-            date    INTEGET NOT NULL,
-            message TEXT NOT NULL
+            date    DATETIME NOT NULL,
+            message TEXT     NOT NULL
         )
     ",
     )
     .execute(&db)
     .await
-    .unwrap();
+    .expect("Failed to create table reminders.");
 
     web::HttpServer::new(move || {
         web::App::new()
