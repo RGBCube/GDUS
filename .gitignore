@@ -1,11 +1,18 @@
 *
 
-!src/
+!rpid/
+!rpid/src/
+!rpid/pyproject.toml
+!rpid/poetry.lock/
+
+!server/
+!server/src/
+
+!server/.rustfmt.toml
+!server/Cargo.lock
+!server/Cargo.toml
 
 !.gitignore
-!.rustfmt.toml
-!Cargo.lock
-!Cargo.toml
 
 !*.md
 !*.rs
