@@ -30,16 +30,23 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
     .await
     .expect("Failed to fetch reminders.");
 
-    let formatted_reminders: Vec<(String, String)> = reminders
+    println!("{reminders:?}");
+
+    let formatted_reminders: Vec<(i64, String, String)> = reminders
         .into_iter()
         .map(|(date_time, message)| {
             let local_time = Local.from_local_datetime(&date_time).unwrap();
-            (local_time.format("%Y/%m/%d %H:%M").to_string(), message)
+            (
+                local_time.timestamp() as i64,
+                local_time.format("%Y/%m/%d %H:%M").to_string(),
+                message,
+            )
         })
         .collect();
 
     Ok(html! {
         (DOCTYPE)
+
         style {r#"
             body {
                 font-family: sans;
@@ -48,12 +55,12 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
                 padding: 20px;
             }
 
-            ul#reminders {
+            ul {
                 list-style: none;
                 padding: 0;
             }
 
-            ul#reminders li {
+            ul li {
                 background-color: #fff;
                 border-radius: 8px;
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -61,13 +68,13 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
                 margin-bottom: 20px;
             }
 
-            ul#reminders li h3 {
+            ul li h3 {
                 margin-bottom: 10px;
                 font-size: 18px;
                 color: #333;
             }
 
-            ul#reminders li p {
+            ul li p {
                 color: #666;
             }
         "#}
@@ -75,16 +82,40 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
         ul id="reminders" {
             @for reminder in formatted_reminders {
                 li {
-                    h3 { (reminder.0) }
-                    p { (reminder.1) }
+                    p class="timestamp" data-timestamp=(reminder.0) style="display: none;" {}
+                    h3 { (reminder.1) }
+                    p { (reminder.2) }
                 }
             }
         }
 
-        script defer {(PreEscaped(r#"
-            setInterval(function() {
+        script defer {(PreEscaped(r##"
+            setInterval(() => {
                 location.reload();
-            }, 5000);
-        "#))}
+
+                const reminders = Array.from(
+                        document
+                        .querySelectorAll("#reminders .timestamp")
+                    )
+                    .map(timestampItem => ({
+                        content: timestampItem
+                            .parentNode
+                            .querySelector("p:not(.timestamp)")
+                            .textContent,
+                        timestamp: +timestampItem.getAttribute("data-timestamp"),
+                    }));
+
+                const currentTime = Math.floor(Date.now() / 1000);
+
+                reminders.forEach(reminder => {
+                    const differenceSeconds = currentTime - reminder.timestamp;
+
+                    if (differenceSeconds < 1 * 60) {
+                        // new Audio("/beep.mp3").play();
+                        alert("Geldi! " + reminder.content);
+                    }
+                });
+            }, 1 * 60 * 1000);
+        "##))}
     })
 }
