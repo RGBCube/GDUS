@@ -90,9 +90,7 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
         }
 
         script defer {(PreEscaped(r##"
-            setInterval(() => {
-                location.reload();
-
+            const alertIfTime = () => {
                 const reminders = Array.from(
                         document
                         .querySelectorAll("#reminders .timestamp")
@@ -115,6 +113,13 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
                         alert("Geldi! " + reminder.content);
                     }
                 });
+            };
+
+            alertIfTime();
+
+            setInterval(() => {
+                location.reload();
+                alertIfTime();
             }, 1 * 60 * 1000);
         "##))}
     })
