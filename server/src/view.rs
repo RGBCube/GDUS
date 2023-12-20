@@ -109,7 +109,8 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
                     const differenceSeconds = currentTime - reminder.timestamp;
 
                     if (differenceSeconds < 1 * 60) {
-                        fetch("http://localhost:3000/toggle").then(console.log);
+                        fetch("http://localhost:3000/toggle-led").then(console.log);
+                        fetch("http://localhost:3000/speak?" + new URLSearchParams({ text: reminder.content })).then(console.log);
                     }
                 });
             };

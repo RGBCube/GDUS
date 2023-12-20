@@ -10,10 +10,10 @@
 
 !server/.rustfmt.toml
 !server/Cargo.lock
-!server/Cargo.toml
 
 !.gitignore
 
 !*.md
 !*.py
 !*.rs
+!*.toml
