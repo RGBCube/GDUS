@@ -1,12 +1,14 @@
 import os
 
 from fastapi import FastAPI
-from RPi import GPIO as gpio
+import RPi.GPIO as gpio
 
 LED_PIN = 17
 led_state = False
 
-gipo.setmode(gpio.BCM)
+gpio.setmode(gpio.BCM)
+gpio.setup(LED_PIN, gpio.OUT)
+
 gpio.output(LED_PIN, int(led_state))
 
 app = FastAPI()
