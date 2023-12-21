@@ -15,6 +15,7 @@ app = FastAPI()
 
 @app.get("/led/toggle")
 async def toggle() -> str:
+    global led_state
     led_state = not led_state
     gpio.output(LED_PIN, int(led_state))
 
@@ -22,7 +23,7 @@ async def toggle() -> str:
 
 @app.get("/speak")
 async def speak(text: str) -> str:
-    ret = os.system(f'text2speech "{text}""')
+    ret = os.system(f'text2speech "{text}"')
 
     return f"TEXT {'OK' if ret == 0 else 'FAIL'}, TEXT: {text}";
 

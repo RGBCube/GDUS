@@ -40,7 +40,7 @@ async fn main() -> io::Result<()> {
             .service(submit::submit_form)
             .service(view::view)
     })
-    .bind(("0.0.0.0", 80))?
+    .bind(("0.0.0.0", 8080))?
     .run()
     .await
 }
