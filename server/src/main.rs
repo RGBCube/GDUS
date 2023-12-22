@@ -24,7 +24,8 @@ async fn main() -> io::Result<()> {
         r"
         CREATE TABLE IF NOT EXISTS reminders (
             date    DATETIME NOT NULL,
-            message TEXT     NOT NULL
+            message TEXT     NOT NULL,
+            led     TINYINT  NOT NULL
         )
     ",
     )

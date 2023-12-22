@@ -16,6 +16,7 @@ use sqlx::SqlitePool;
 pub struct Reminder {
     date: String,
     message: String,
+    led: String,
 }
 
 #[web::get("/submit-form")]
@@ -30,13 +31,14 @@ async fn submit_form(
     sqlx::query(
         r"
         INSERT INTO
-            reminders (date, message)
+            reminders (date, message, led)
         VALUES
-            (?, ?)
+            (?, ?, ?)
     ",
     )
     .bind(date_time)
     .bind(reminder.message)
+    .bind(reminder.led.parse::<u8>().unwrap_or(0))
     .execute(&**data)
     .await
     .expect("Failed to save reminder.");
@@ -134,6 +136,9 @@ async fn submit() -> web::Result<Markup> {
             br;
             label for="message" { "Mesaj:" }
             input id="message" name="message";
+            br;
+            label for="led" { "Yakılacal LED (yakmamak için boş bırakın):" }
+            input id="led" name="led";
         }
     })
 }

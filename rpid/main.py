@@ -3,23 +3,29 @@ import os
 from fastapi import FastAPI
 import RPi.GPIO as gpio
 
-LED_PIN = 17
-led_state = False
+leds = [
+    (),
+    (17, True),
+    (18, True),
+    (19, True),
+]
 
-gpio.setmode(gpio.BCM)
-gpio.setup(LED_PIN, gpio.OUT)
-
-gpio.output(LED_PIN, int(led_state))
+for led in leds:
+    gpio.setmode(gpio.BCM)
+    gpio.setup(led[0], gpio.OUT)
+    gpio.output(LED_PIN, int(led[1]))
 
 app = FastAPI()
 
 @app.get("/led/toggle")
-async def toggle() -> str:
-    global led_state
-    led_state = not led_state
-    gpio.output(LED_PIN, int(led_state))
+async def toggle(number: int) -> str:
+    global leds
+    led = leds[number]
+    leds[number] = (led[0], not led[1])
 
-    return f"TOGGLE OK, NEW STATE: {'ON' if not led_state else 'OFF'}"
+    gpio.output(led[0], int(led[1]))
+
+    return f"TOGGLE OK, NEW STATE: {'ON' if led[1] else 'OFF'}"
 
 @app.get("/speak")
 async def speak(text: str) -> str:

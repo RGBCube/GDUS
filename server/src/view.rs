@@ -15,10 +15,10 @@ use sqlx::SqlitePool;
 
 #[web::get("/view")]
 async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
-    let reminders = sqlx::query_as::<_, (NaiveDateTime, String)>(
+    let reminders = sqlx::query_as::<_, (NaiveDateTime, String, i8)>(
         r#"
         SELECT
-            date, message
+            date, message, led
         FROM
             reminders
         WHERE
@@ -32,14 +32,15 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
 
     println!("{reminders:?}");
 
-    let formatted_reminders: Vec<(i64, String, String)> = reminders
+    let formatted_reminders: Vec<(i64, String, String, i8)> = reminders
         .into_iter()
-        .map(|(date_time, message)| {
+        .map(|(date_time, message, led)| {
             let local_time = Local.from_local_datetime(&date_time).unwrap();
             (
                 local_time.timestamp() as i64,
                 local_time.format("%Y/%m/%d %H:%M").to_string(),
                 message,
+                led,
             )
         })
         .collect();
@@ -81,8 +82,7 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
 
         ul id="reminders" {
             @for reminder in formatted_reminders {
-                li {
-                    p class="timestamp" data-timestamp=(reminder.0) style="display: none;" {}
+                li data-timestamp=(reminder.0) data-led=(reminder.3) {
                     h3 { (reminder.1) }
                     p { (reminder.2) }
                 }
@@ -93,14 +93,12 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
             const alertIfTime = () => {
                 const reminders = Array.from(
                         document
-                        .querySelectorAll("#reminders .timestamp")
+                        .querySelectorAll("li")
                     )
-                    .map(timestampItem => ({
-                        content: timestampItem
-                            .parentNode
-                            .querySelector("p:not(.timestamp)")
-                            .textContent,
-                        timestamp: +timestampItem.getAttribute("data-timestamp"),
+                    .map(item => ({
+                        content: item.querySelector("p").textContent,
+                        timestamp: +item.getAttribute("data-timestamp"),
+                        led: +item.getAttribute("data-led"),
                     }));
 
                 const currentTime = Math.floor(Date.now() / 1000);
@@ -109,7 +107,7 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
                     const differenceSeconds = currentTime - reminder.timestamp;
 
                     if (differenceSeconds < 1 * 60) {
-                        fetch("http://localhost:3000/toggle-led").then(console.log);
+                        if (reminder.led != 0) fetch("http://localhost:3000/led/toggle?" + new URLSearchParams({ number: reminder.led }).then(console.log);
                         fetch("http://localhost:3000/speak?" + new URLSearchParams({ text: reminder.content })).then(console.log);
                     }
                 });
