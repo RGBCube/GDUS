@@ -25,6 +25,13 @@ async def toggle(number: int) -> str:
 
     gpio.output(led[0], int(led[1]))
 
+    turn_off = leds.copy().remove(led)
+    del turn_off[0] # ()
+
+    for i, led in enumerate(turn_off):
+        gpio.output(led[0], True)
+        leds[i + 1][1] = True
+
     return f"TOGGLE OK, NEW STATE: {'ON' if led[1] else 'OFF'}"
 
 @app.get("/speak")
