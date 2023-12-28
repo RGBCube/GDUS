@@ -4,6 +4,7 @@ mod view;
 
 use std::io;
 
+use actix_cors::Cors;
 use actix_web as web;
 use sqlx::{
     sqlite::SqliteConnectOptions,
@@ -33,9 +34,12 @@ async fn main() -> io::Result<()> {
     .await
     .expect("Failed to create table reminders.");
 
+    let data = web::web::Data::new(db);
+
     web::HttpServer::new(move || {
         web::App::new()
-            .app_data(web::web::Data::new(db.clone()))
+            .app_data(data.clone())
+            .wrap(Cors::permissive())
             .service(index::index)
             .service(submit::submit)
             .service(submit::submit_form)

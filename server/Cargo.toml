@@ -8,6 +8,7 @@ version = "0.0.1"
 edition = "2021"
 
 [dependencies]
+actix-cors = "0.6.5"
 actix-web = "4.4.0"
 chrono    = "0.4.31"
 maud      = { version = "0.25.0", features = [ "actix-web" ] }
