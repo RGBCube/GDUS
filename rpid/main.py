@@ -25,12 +25,15 @@ async def toggle(number: int) -> str:
 
     gpio.output(led[0], int(led[1]))
 
-    turn_off = leds.copy().remove(led)
-    del turn_off[0] # ()
+    turn_off = leds.copy()
+    turn_off.remove(led)
+    turn_off.remove(())
 
-    for i, led in enumerate(turn_off):
+    # Horrible code, but time is running out and so is
+    # my motivation for this project.
+    for led in turn_off:
         gpio.output(led[0], True)
-        leds[i + 1][1] = True
+        leds[leds.index(led)][1] = True
 
     return f"TOGGLE OK, NEW STATE: {'ON' if led[1] else 'OFF'}"
 
