@@ -39,7 +39,7 @@ async def toggle(number: int) -> str:
 
 @app.get("/speak")
 async def speak(text: str) -> str:
-    ret = os.system(f'text2speech "{text}"')
+    ret = os.system(f'gtts-cli "{text}" --output text.mp3; pw-play text.mp3')
 
     return f"TEXT {'OK' if ret == 0 else 'FAIL'}, TEXT: {text}";
 
