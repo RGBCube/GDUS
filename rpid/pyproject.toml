@@ -8,5 +8,6 @@ authors = [ "RGBCube" ]
 python = "^3.8"
 
 fastapi    = "0.105.0"
+gtts       = "2.5.0"
 "RPi.GPIO" = "0.7.1"
 uvicorn    = "0.24.0.post1"

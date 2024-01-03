@@ -10,10 +10,10 @@ leds = [
     (19, True),
 ]
 
-for led in leds:
+for led in leds[1::]:
     gpio.setmode(gpio.BCM)
     gpio.setup(led[0], gpio.OUT)
-    gpio.output(LED_PIN, int(led[1]))
+    gpio.output(led[0], int(led[1]))
 
 app = FastAPI()
 
@@ -39,7 +39,7 @@ async def toggle(number: int) -> str:
 
 @app.get("/speak")
 async def speak(text: str) -> str:
-    ret = os.system(f'gtts-cli "{text}" --output text.mp3; pw-play text.mp3')
+    ret = os.system(f'gtts-cli "{text}" --lang tr --output text.mp3; pw-play text.mp3')
 
     return f"TEXT {'OK' if ret == 0 else 'FAIL'}, TEXT: {text}";
 
