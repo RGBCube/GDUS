@@ -78,6 +78,17 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
             ul li p {
                 color: #666;
             }
+
+            .clock {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+                font-size: 24px;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+            }
         "#}
 
         ul id="reminders" {
@@ -88,6 +99,8 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
                 }
             }
         }
+
+        .clock {}
 
         script {
             (PreEscaped(embed::string!("alert.js")))
