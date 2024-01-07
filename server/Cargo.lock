@@ -575,6 +575,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "embed"
+version = "0.1.0"
+source = "git+https://github.com/RGBCube/embed-rs#7c41253f4f6006fcc2aad189c19132d2f0cccec2"
+dependencies = [
+ "embed-macros",
+]
+
+[[package]]
+name = "embed-macros"
+version = "0.1.0"
+source = "git+https://github.com/RGBCube/embed-rs#7c41253f4f6006fcc2aad189c19132d2f0cccec2"
+dependencies = [
+ "proc-macro2",
+ "quote",
+ "syn 2.0.43",
+]
+
+[[package]]
 name = "encoding_rs"
 version = "0.8.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1327,6 +1345,7 @@ dependencies = [
  "actix-cors",
  "actix-web",
  "chrono",
+ "embed",
  "maud",
  "serde",
  "sqlx",
@@ -2353,3 +2372,8 @@ dependencies = [
  "cc",
  "pkg-config",
 ]
+
+[[patch.unused]]
+name = "proc-macro2"
+version = "1.0.75"
+source = "git+https://github.com/RGBCube/proc-macro2#e1713f29a5488360d96178081ac0fca3d4abdb8a"

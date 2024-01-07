@@ -13,6 +13,7 @@
 
 !.gitignore
 
+!*.js
 !*.md
 !*.py
 !*.rs
