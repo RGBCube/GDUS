@@ -22,7 +22,6 @@ const alertIfTime = () => {
 };
 
 alertIfTime();
-
 setInterval(() => {
     location.reload();
     alertIfTime();
@@ -30,10 +29,19 @@ setInterval(() => {
 
 const updateClock = () => {
     const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const seconds = now.getSeconds().toString().padStart(2, '0');
-    document.querySelector(".clock").innerText = `${hours}:${minutes}:${seconds}`;
+    const options = {
+        hour: "2-digit",
+        minute: "2-digit",
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+    };
+
+    const dateString = now.toLocaleDateString("tr-TR", options);
+
+    document.querySelector(".clock").innerHTML = dateString;
 };
 
-setInterval(updateClock, 1000);
+updateClock();
+setInterval(updateClock, 1 * 60 * 1000);

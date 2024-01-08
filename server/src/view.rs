@@ -48,48 +48,9 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
     Ok(html! {
         (DOCTYPE)
 
-        style {r#"
-            body {
-                font-family: sans;
-                background-color: #f4f4f4;
-                margin: 0;
-                padding: 20px;
-            }
-
-            ul {
-                list-style: none;
-                padding: 0;
-            }
-
-            ul li {
-                background-color: #fff;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                padding: 20px;
-                margin-bottom: 20px;
-            }
-
-            ul li h3 {
-                margin-bottom: 10px;
-                font-size: 18px;
-                color: #333;
-            }
-
-            ul li p {
-                color: #666;
-            }
-
-            .clock {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-                font-size: 24px;
-                background-color: #fff;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                padding: 20px;
-            }
-        "#}
+        style {
+            (PreEscaped(embed::string!("view.css")))
+        }
 
         ul id="reminders" {
             @for reminder in formatted_reminders {
