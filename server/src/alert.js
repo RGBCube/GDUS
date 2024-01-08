@@ -14,7 +14,7 @@ const alertIfTime = () => {
     reminders.forEach(reminder => {
         const differenceSeconds = currentTime - reminder.timestamp;
 
-        if (differenceSeconds < 1 * 60) {
+        if (differenceSeconds < 60 && differenceSeconds > -30) {
             if (reminder.led != 0) fetch("http://localhost:3000/led/toggle?" + new URLSearchParams({ number: reminder.led })).then(console.log);
             fetch("http://localhost:3000/speak?" + new URLSearchParams({ text: reminder.content })).then(console.log);
         }
