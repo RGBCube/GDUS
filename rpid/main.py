@@ -4,9 +4,9 @@ from fastapi import FastAPI
 import RPi.GPIO as gpio
 
 leds = [
-    [17, True],
-    [18, True],
-    [19, True],
+    [17, False],
+    [18, False],
+    [19, False],
 ]
 
 for led in leds:
@@ -27,7 +27,7 @@ async def toggle(number: int) -> str:
     for i, iled in enumerate(leds):
         if iled[0] == led[0]: continue
 
-        iled[1] = True
+        iled[1] = False
         gpio.output(iled[0], iled[1])
 
     return f"TOGGLE OK, NEW STATE: {'ON' if led[1] else 'OFF'}"
@@ -37,7 +37,7 @@ async def speak(text: str) -> str:
     with open("speak.txt") as f:
         f.write(text)
 
-    ret = os.system(f'gtts-cli --file speak.txt --lang tr --output text.mp3; pw-play text.mp3')
+    ret = os.system(f"gtts-cli --file speak.txt --lang tr --output text.mp3; pw-play text.mp3")
 
     return f"TEXT {'OK' if ret == 0 else 'FAIL'}, TEXT: {text}";
 
