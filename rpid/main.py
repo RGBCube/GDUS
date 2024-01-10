@@ -20,19 +20,14 @@ app = FastAPI()
 async def toggle(number: int) -> str:
     global leds
     led = leds[number - 1]
-
+    led[1] = not led[1]
     gpio.output(led[0], int(led[1]))
 
-    turn_off = leds.copy()
-    turn_off.remove(led)
+    for i, iled in enumerate(turn_off):
+        if iled[0] == led[0]: continue
 
-    leds[number - 1][1] = not led[1]
-
-    # Horrible code, but time is running out and so is
-    # my motivation for this project.
-    for led in turn_off:
         gpio.output(led[0], True)
-        leds[leds.index(led)][1] = True
+        leds[i][1] = True
 
     return f"TOGGLE OK, NEW STATE: {'ON' if led[1] else 'OFF'}"
 
