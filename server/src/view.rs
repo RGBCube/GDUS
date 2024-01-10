@@ -37,7 +37,7 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
         .map(|(date_time, message, led)| {
             let local_time = Local.from_local_datetime(&date_time).unwrap();
             (
-                local_time.timestamp() as i64,
+                local_time.timestamp(),
                 local_time.format("%Y/%m/%d %H:%M").to_string(),
                 message,
                 led,
