@@ -4,13 +4,12 @@ from fastapi import FastAPI
 import RPi.GPIO as gpio
 
 leds = [
-    (),
-    (17, True),
-    (18, True),
-    (19, True),
+    [17, True],
+    [18, True],
+    [19, True],
 ]
 
-for led in leds[1::]:
+for led in leds:
     gpio.setmode(gpio.BCM)
     gpio.setup(led[0], gpio.OUT)
     gpio.output(led[0], int(led[1]))
@@ -20,14 +19,14 @@ app = FastAPI()
 @app.get("/led/toggle")
 async def toggle(number: int) -> str:
     global leds
-    led = leds[number]
-    leds[number] = (led[0], not led[1])
+    led = leds[number - 1]
 
     gpio.output(led[0], int(led[1]))
 
     turn_off = leds.copy()
     turn_off.remove(led)
-    turn_off.remove(())
+
+    leds[number - 1][1] = not led[1]
 
     # Horrible code, but time is running out and so is
     # my motivation for this project.
