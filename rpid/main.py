@@ -34,7 +34,7 @@ async def toggle(number: int) -> str:
 
 @app.get("/speak")
 async def speak(text: str) -> str:
-    with open("speak.txt") as f:
+    with open("speak.txt", "w") as f:
         f.write(text)
 
     ret = os.system(f"gtts-cli --file speak.txt --lang tr --output text.mp3; pw-play text.mp3")
