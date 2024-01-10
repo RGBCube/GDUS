@@ -23,7 +23,7 @@ async def toggle(number: int) -> str:
     led[1] = not led[1]
     gpio.output(led[0], int(led[1]))
 
-    for i, iled in enumerate(turn_off):
+    for i, iled in enumerate(leds):
         if iled[0] == led[0]: continue
 
         gpio.output(led[0], True)
