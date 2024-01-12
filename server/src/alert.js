@@ -17,6 +17,10 @@ const alertIfTime = () => {
         if (differenceSeconds < 60 && differenceSeconds > -30) {
             if (reminder.led != 0) fetch("http://localhost:3000/led/toggle?" + new URLSearchParams({ number: reminder.led })).then(console.log);
             fetch("http://localhost:3000/speak?" + new URLSearchParams({ text: reminder.content })).then(console.log);
+
+            setTimeout(() => {
+                alert(reminder.content);
+            }, 0);
         }
     });
 };
