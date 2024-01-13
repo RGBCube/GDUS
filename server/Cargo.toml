@@ -1,11 +1,11 @@
 [package]
-name = "proje"
+name        = "gdus"
 description = "TÜBİTAK Projesi"
-authors = [ "RGBCube" ]
-repository = "https://github.com/RGBCube/NamelessProje"
-license = "GPL"
-version = "0.0.1"
-edition = "2021"
+authors     = [ "RGBCube" ]
+repository  = "https://github.com/RGBCube/GDUS"
+license     = "GPL"
+version     = "0.0.1"
+edition     = "2021"
 
 [dependencies]
 actix-cors = "0.6.5"
