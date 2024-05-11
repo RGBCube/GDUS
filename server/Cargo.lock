@@ -571,17 +571,19 @@ dependencies = [
 ]
 
 [[package]]
-name = "embed"
-version = "0.1.0"
-source = "git+https://github.com/RGBCube/embed-rs#7c2eb614db7947d5f12c02685c97404729e98acd"
+name = "embd"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "73f44bd5e4300f535cebd9949a5d76f413ce2c2fe4f454bbfc854c3b53d70f16"
 dependencies = [
- "embed-macros",
+ "embd-macros",
 ]
 
 [[package]]
-name = "embed-macros"
-version = "0.1.0"
-source = "git+https://github.com/RGBCube/embed-rs#7c2eb614db7947d5f12c02685c97404729e98acd"
+name = "embd-macros"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6d8aff0b18a634834d77cf70effb2ee3f5ab2b4f36f1caa7fabe213ac7767b0f"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -757,7 +759,7 @@ dependencies = [
  "actix-cors",
  "actix-web",
  "chrono",
- "embed",
+ "embd",
  "maud",
  "serde",
  "sqlx",
@@ -1341,8 +1343,9 @@ dependencies = [
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.75"
-source = "git+https://github.com/RGBCube/proc-macro2#e1713f29a5488360d96178081ac0fca3d4abdb8a"
+version = "1.0.82"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8ad3d49ab951a01fbaafe34f2ec74122942fe18a3f9814c3268f1bb72042131b"
 dependencies = [
  "unicode-ident",
 ]
