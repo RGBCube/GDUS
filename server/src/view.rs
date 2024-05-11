@@ -49,7 +49,7 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
         (DOCTYPE)
 
         style {
-            (PreEscaped(embd::string!("view.css")))
+            (PreEscaped(include_str!("view.css")))
         }
 
         ul id="reminders" {
@@ -64,7 +64,7 @@ async fn view(data: Data<SqlitePool>) -> web::Result<Markup> {
         .clock {}
 
         script {
-            (PreEscaped(embd::string!("alert.js")))
+            (PreEscaped(include_str!("alert.js")))
         }
     })
 }
